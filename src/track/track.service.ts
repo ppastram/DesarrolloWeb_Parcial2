@@ -11,8 +11,8 @@ export class TrackService {
         @InjectRepository(TrackEntity)
         private readonly trackRepository: Repository<TrackEntity>,
 
-        //@InjectRepository(AlbumEntity)
-        //private readonly albumRepository: Repository<TrackEntity> 
+        @InjectRepository(AlbumEntity)
+        private readonly albumRepository: Repository<AlbumEntity> 
     ){}
 
     async create(albumId: string, track: TrackEntity): Promise<TrackEntity> {
@@ -21,12 +21,9 @@ export class TrackService {
             throw new BusinessLogicException("La duración del track debe ser un número positivo", BusinessError.PRECONDITION_FAILED);
 
         //valide que el album cuyo identificador es albumId exista
-        //buscar con findOne de album si existe el album con el id dado
-
-
-        //const albumBuscado: AlbumEntity = await this.albumRepository.findOne({where: {id: albumId}});
-        //if (!albumBuscado)
-        //    throw new BusinessLogicException("El album con el id dado no fue encontrado", BusinessError.NOT_FOUND);
+        const albumBuscado: AlbumEntity = await this.albumRepository.findOne({where: {id: albumId}});
+        if (!albumBuscado)
+            throw new BusinessLogicException("El album con el id dado no fue encontrado", BusinessError.NOT_FOUND);
 
         return await this.trackRepository.save(track);
     }

@@ -10,10 +10,10 @@ export class PerformerEntity {
     nombre: string;
     
     @Column()
-    descripcion: string;
-    
-    @Column()
     imagen: string;
+
+    @Column()
+    descripcion: string;
 
     @ManyToMany(() => AlbumEntity, album => album.performers)
     albums: AlbumEntity[];

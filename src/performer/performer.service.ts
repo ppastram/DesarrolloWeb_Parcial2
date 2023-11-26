@@ -14,7 +14,7 @@ export class PerformerService {
     async create(performer: PerformerEntity): Promise<PerformerEntity> {
         //valide que la descripcion tenga maximo 100 caracteres
         if (performer.descripcion.length > 100)
-            throw new BusinessLogicException("La descripción del performer no puede tener más de 100 caracteres", BusinessError.PRECONDITION_FAILED);
+            throw new BusinessLogicException("La descripción no puede tener más de 100 caracteres", BusinessError.PRECONDITION_FAILED);
 
         return await this.performerRepository.save(performer);
     }

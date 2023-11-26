@@ -18,7 +18,7 @@ export class PerformerAlbumService {
     async addPerformerToAlbum(albumId: string, performerId: string, ): Promise<AlbumEntity> {
 
         //valide que tanto el album como el performer existan
-        const album: AlbumEntity = await this.albumRepository.findOne({where: {id: albumId}, relations: ["performers"]});
+        const album: AlbumEntity = await this.albumRepository.findOne({where: {id: albumId}, relations: ['performers', 'tracks']});
         if (!album)
             throw new BusinessLogicException("El album con el id dado no fue encontrado", BusinessError.NOT_FOUND);
 
