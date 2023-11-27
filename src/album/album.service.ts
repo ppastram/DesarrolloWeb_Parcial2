@@ -14,8 +14,14 @@ export class AlbumService {
 
     async create(album: AlbumEntity): Promise<AlbumEntity> {
         //valide que el nombre y la descripción del album no estén vacías
-        if (album.nombre == "" || album.descripcion == "")
-            throw new BusinessLogicException("El nombre y la descripción del álbum no pueden estar vacíos", BusinessError.PRECONDITION_FAILED);
+        if (album.nombre == "")
+        {
+            throw new BusinessLogicException("El nombre del álbum no puede estar vacío", BusinessError.PRECONDITION_FAILED);
+        }
+        else if (album.descripcion == "")
+        {
+            throw new BusinessLogicException("La descripción del álbum no puede estar vacía", BusinessError.PRECONDITION_FAILED);
+        }
 
         return await this.albumRepository.save(album);
     }

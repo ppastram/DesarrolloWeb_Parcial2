@@ -10,7 +10,7 @@ import { TrackEntity } from './track.entity/track.entity';
 export class TrackController {
     constructor(private readonly trackService: TrackService) {}
 
-    @Post()
+    @Post(':albumId')
     async create(@Param('albumId') albumId: string, @Body() trackDto: TrackDto) {
         const track: TrackEntity = plainToInstance(TrackEntity, trackDto);
         return await this.trackService.create(albumId, track);

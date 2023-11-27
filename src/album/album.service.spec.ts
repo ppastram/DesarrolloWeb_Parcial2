@@ -85,7 +85,22 @@ describe('AlbumService', () => {
       performers: []
     }
  
-    await expect(service.create(album)).rejects.toHaveProperty("message", "El nombre y la descripción del álbum no pueden estar vacíos");
+    await expect(service.create(album)).rejects.toHaveProperty("message", "La descripción del álbum no puede estar vacía");
+  });
+
+  //no se crea un album que tiene el nombre vacío
+  it('create debería lanzar una excepción de negocio cuando el álbum tiene el nombre vacío', async () => {
+    const album: AlbumEntity = {
+      id: "",
+      nombre: "",
+      descripcion: faker.lorem.sentence(),
+      fecha_lanzamiento: faker.date.past(),
+      caratula: faker.image.url(),
+      tracks: [],
+      performers: []
+    }
+ 
+    await expect(service.create(album)).rejects.toHaveProperty("message", "El nombre del álbum no puede estar vacío");
   });
 
   //se obtienen todos los ábumes correctamente

@@ -15,7 +15,7 @@ export class PerformerAlbumService {
         private readonly albumRepository: Repository<AlbumEntity>
     ) {}
 
-    async addPerformerToAlbum(albumId: string, performerId: string, ): Promise<AlbumEntity> {
+    async addPerformerToAlbum(performerId: string, albumId: string,): Promise<AlbumEntity> {
 
         //valide que tanto el album como el performer existan
         const album: AlbumEntity = await this.albumRepository.findOne({where: {id: albumId}, relations: ['performers', 'tracks']});

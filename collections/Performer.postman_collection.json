@@ -1,0 +1,279 @@
+{
+	"info": {
+		"_postman_id": "177a16f6-de2a-4e03-a32e-b0315ffa78fb",
+		"name": "Performer",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31319589"
+	},
+	"item": [
+		{
+			"name": "Crear performer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"pm.test(\"Response is an object with properties nombre, descripcion, imagen, id\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.be.an('object').that.has.all.keys('nombre', 'descripcion', 'imagen', 'id');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\": \"Juan Magán\",\n    \"descripcion\": \"No sé quién es este man pero me suena a un reggaetonero viejo.\",\n    \"imagen\": \"www.jm.com/foto\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/v1/performers/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"performers",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "No crear performer por descripción larga",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 412\", function () {",
+							"    pm.response.to.have.status(412);",
+							"});",
+							"",
+							"pm.test(\"Response is an object with statusCode property\", function () {",
+							"    pm.expect(pm.response.json()).to.be.an('object').that.has.property('statusCode');",
+							"});",
+							"",
+							"pm.test(\"Response is an object with message property\", function () {",
+							"    pm.expect(pm.response.json()).to.be.an('object').that.has.property('message');",
+							"});",
+							"",
+							"pm.test(\"Response message equals 'La descripción no puede tener más de 100 caracteres'\", function () {",
+							"    var responseJSON = pm.response.json();",
+							"    pm.expect(responseJSON.message).to.equal(\"La descripción no puede tener más de 100 caracteres\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\": \"Juan Magán\",\n    \"descripcion\": \"No sé quién es este man pero me suena a un reggaetonero viejo. No sé quién es este man pero me suena a un reggaetonero viejo. No sé quién es este man pero me suena a un reggaetonero viejo.\",\n    \"imagen\": \"www.jm.com/foto\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/v1/performers/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"performers",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener todos los performers",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response is an array\", function () {",
+							"    pm.expect(pm.response.json()).to.be.an('array');",
+							"});",
+							"",
+							"pm.test(\"Each element in the array has an id, nombre, imagen, descripcion, and albums property\", function () {",
+							"    pm.response.json().forEach(function(performer) {",
+							"        pm.expect(performer).to.have.property('id');",
+							"        pm.expect(performer).to.have.property('nombre');",
+							"        pm.expect(performer).to.have.property('imagen');",
+							"        pm.expect(performer).to.have.property('descripcion');",
+							"        pm.expect(performer).to.have.property('albums');",
+							"    });",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/v1/performers/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"performers",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener performer por id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response is an object with id property\", function () {",
+							"    pm.expect(pm.response.json()).to.be.an('object').that.has.property('id');",
+							"});",
+							"",
+							"pm.test(\"Response is an object with nombre property\", function () {",
+							"    pm.expect(pm.response.json()).to.be.an('object').that.has.property('nombre');",
+							"});",
+							"",
+							"pm.test(\"Response is an object with imagen property\", function () {",
+							"    pm.expect(pm.response.json()).to.be.an('object').that.has.property('imagen');",
+							"});",
+							"",
+							"pm.test(\"Response is an object with descripcion property\", function () {",
+							"    pm.expect(pm.response.json()).to.be.an('object').that.has.property('descripcion');",
+							"});",
+							"",
+							"pm.test(\"Response is an object with albums property\", function () {",
+							"    pm.expect(pm.response.json()).to.be.an('object').that.has.property('albums');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/v1/performers/:performerId",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"performers",
+						":performerId"
+					],
+					"variable": [
+						{
+							"key": "performerId",
+							"value": "c81dfb23-8c75-47bc-b5f7-b908d7c56585"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "No obtener performer por Id inexistente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Response is an object with statusCode property\", function () {",
+							"    pm.expect(pm.response.json()).to.be.an('object').that.has.property('statusCode');",
+							"});",
+							"",
+							"pm.test(\"Response is an object with message property\", function () {",
+							"    pm.expect(pm.response.json()).to.be.an('object').that.has.property('message');",
+							"});",
+							"",
+							"pm.test(\"Response message equals 'El performer con el id dado no fue encontrado'\", function () {",
+							"    pm.expect(pm.response.json().message).to.equal(\"El performer con el id dado no fue encontrado\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/v1/performers/:performerId",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"performers",
+						":performerId"
+					],
+					"variable": [
+						{
+							"key": "performerId",
+							"value": "00000000-0000-0000-0000-000000000000"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

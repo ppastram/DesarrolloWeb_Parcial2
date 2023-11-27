@@ -9,7 +9,7 @@ export class PerformerAlbumController {
     constructor(private readonly performerAlbumService: PerformerAlbumService){}
 
     @Post(':performerId/albums/:albumId')
-    async addPerformerToAlbum(@Param('albumId') albumId: string, @Param('performerId') performerId: string){
+    async addPerformerToAlbum(@Param('performerId') performerId: string, @Param('albumId') albumId: string){
        return await this.performerAlbumService.addPerformerToAlbum(performerId, albumId);
     }
 }

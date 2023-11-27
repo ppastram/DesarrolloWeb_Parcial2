@@ -67,7 +67,7 @@ describe('PerformerAlbumService', () => {
     const album: AlbumEntity = albumList[0];
     const performer: PerformerEntity = performerList[0];
 
-    const newAlbum = await service.addPerformerToAlbum(album.id, performer.id);
+    const newAlbum = await service.addPerformerToAlbum(performer.id, album.id);
     expect(newAlbum).toBeDefined();
     expect(newAlbum.performers.length).toEqual(1);
     expect(newAlbum.performers[0].id).toEqual(performer.id);
@@ -82,7 +82,7 @@ describe('PerformerAlbumService', () => {
     const performer: PerformerEntity = performerList[0];
 
     try {
-      const newAlbum = await service.addPerformerToAlbum("123", performer.id);
+      const newAlbum = await service.addPerformerToAlbum(performer.id, "123");
     } catch (error) {
       expect(error).toBeDefined();
       expect(error).toBeInstanceOf(BusinessLogicException);
@@ -96,7 +96,7 @@ describe('PerformerAlbumService', () => {
     const performer: PerformerEntity = performerList[0];
 
     try {
-      const newAlbum = await service.addPerformerToAlbum(album.id, "123");
+      const newAlbum = await service.addPerformerToAlbum("123", album.id);
     } catch (error) {
       expect(error).toBeDefined();
       expect(error).toBeInstanceOf(BusinessLogicException);
@@ -113,10 +113,10 @@ describe('PerformerAlbumService', () => {
     const performer4: PerformerEntity = performerList[3];
 
     try {
-      const newAlbum = await service.addPerformerToAlbum(album.id, performer1.id);
-      const newAlbum2 = await service.addPerformerToAlbum(album.id, performer2.id);
-      const newAlbum3 = await service.addPerformerToAlbum(album.id, performer3.id);
-      const newAlbum4 = await service.addPerformerToAlbum(album.id, performer4.id);
+      const newAlbum = await service.addPerformerToAlbum(performer1.id, album.id);
+      const newAlbum2 = await service.addPerformerToAlbum(performer2.id, album.id);
+      const newAlbum3 = await service.addPerformerToAlbum(performer3.id, album.id);
+      const newAlbum4 = await service.addPerformerToAlbum(performer4.id, album.id);
     } catch (error) {
       expect(error).toBeDefined();
       expect(error).toBeInstanceOf(BusinessLogicException);

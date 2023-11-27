@@ -1,0 +1,371 @@
+{
+	"info": {
+		"_postman_id": "17b7051d-b65b-4c42-9c17-b0a7a0935604",
+		"name": "Track",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31319589"
+	},
+	"item": [
+		{
+			"name": "Crear track",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"pm.test(\"Response is an object with nombre, duracion, and id properties\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.be.an('object');",
+							"    pm.expect(jsonData).to.have.property('nombre');",
+							"    pm.expect(jsonData).to.have.property('duracion');",
+							"    pm.expect(jsonData).to.have.property('id');",
+							"});",
+							"",
+							"pm.test(\"Response time is less than 500ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\": \"Los sabanales\",\n    \"duracion\": 5\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/v1/tracks/:albumId",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"tracks",
+						":albumId"
+					],
+					"variable": [
+						{
+							"key": "albumId",
+							"value": "7cc6ef74-db80-4439-985c-0bb170306057"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "No crear track de duración negativa",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 412\", function () {",
+							"    pm.response.to.have.status(412);",
+							"});",
+							"",
+							"pm.test(\"Response is an object with statusCode property\", function () {",
+							"    pm.expect(pm.response.json()).to.be.an('object').that.has.property('statusCode');",
+							"});",
+							"",
+							"pm.test(\"Response is an object with message property\", function () {",
+							"    pm.expect(pm.response.json()).to.be.an('object').that.has.property('message');",
+							"});",
+							"",
+							"pm.test(\"Response message equals 'La duración del track debe ser un número positivo'\", function () {",
+							"    pm.expect(pm.response.json().message).to.equal(\"La duración del track debe ser un número positivo\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\": \"Los sabanales\",\n    \"duracion\": -5\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/v1/tracks/:albumId",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"tracks",
+						":albumId"
+					],
+					"variable": [
+						{
+							"key": "albumId",
+							"value": "19aaea53-df3f-4a51-bb5d-81788db4c05a"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "No crear track con álbum inexistente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 404\", function () {",
+							"  pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Response has a statusCode property\", function () {",
+							"  pm.expect(pm.response.json()).to.have.property('statusCode');",
+							"});",
+							"",
+							"pm.test(\"Response has a message property equal to 'El album con el id dado no fue encontrado'\", function () {",
+							"  pm.expect(pm.response.json().message).to.equal('El album con el id dado no fue encontrado');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\": \"Los sabanales\",\n    \"duracion\": 5\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/v1/tracks/:albumId",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"tracks",
+						":albumId"
+					],
+					"variable": [
+						{
+							"key": "albumId",
+							"value": "00000000-0000-0000-0000-000000000000"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener todos los tracks",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response is an array\", function () {",
+							"    pm.expect(pm.response.json()).to.be.an('array');",
+							"});",
+							"",
+							"pm.test(\"Each element in the array has an id property\", function () {",
+							"    pm.response.json().forEach(function(track) {",
+							"        pm.expect(track).to.have.property('id');",
+							"    });",
+							"});",
+							"",
+							"pm.test(\"Each element in the array has a nombre property\", function () {",
+							"    pm.response.json().forEach(function(track) {",
+							"        pm.expect(track).to.have.property('nombre');",
+							"    });",
+							"});",
+							"",
+							"pm.test(\"Each element in the array has a duracion property\", function () {",
+							"    pm.response.json().forEach(function(track) {",
+							"        pm.expect(track).to.have.property('duracion');",
+							"    });",
+							"});",
+							"",
+							"pm.test(\"Each element in the array has an album property\", function () {",
+							"    pm.response.json().forEach(function(track) {",
+							"        pm.expect(track).to.have.property('album');",
+							"    });",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/v1/tracks",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"tracks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener track por id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response is an object with id, nombre, duracion, and album properties\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.be.an('object').that.has.all.keys('id', 'nombre', 'duracion', 'album');",
+							"});",
+							"",
+							"pm.test(\"id is a string\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.id).to.be.a('string');",
+							"});",
+							"",
+							"pm.test(\"nombre is a string\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.nombre).to.be.a('string');",
+							"});",
+							"",
+							"pm.test(\"duracion is a number\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.duracion).to.be.a('number');",
+							"});",
+							"",
+							"pm.test(\"album is an object or null\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.album).to.satisfy(function (value) {",
+							"        return value === null || typeof value === 'object';",
+							"    });",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/v1/tracks/:trackId",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"tracks",
+						":trackId"
+					],
+					"variable": [
+						{
+							"key": "trackId",
+							"value": "0d2c5057-948e-4a0c-b353-1120bf437b9f"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "No obtener track por id inexistente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 404\", function () {",
+							"  pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Response has a statusCode property\", function () {",
+							"  pm.expect(pm.response.json()).to.have.property('statusCode');",
+							"});",
+							"",
+							"pm.test(\"Response has a message property with value 'El track con el id dado no fue encontrado'\", function () {",
+							"  pm.expect(pm.response.json().message).to.equal('El track con el id dado no fue encontrado');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/v1/tracks/:trackId",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"tracks",
+						":trackId"
+					],
+					"variable": [
+						{
+							"key": "trackId",
+							"value": "00000000-0000-0000-0000-000000000000"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
